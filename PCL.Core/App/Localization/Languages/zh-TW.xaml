@@ -2679,6 +2679,16 @@
     <sys:String x:Key="Setup.GameManage.Download.Threads.TooManyWarning.Confirm">我知道了</sys:String>
     <sys:String x:Key="Setup.GameManage.Download.Threads.TooManyWarning.Message">如果設定過多的下載執行緒，可能會導致下載時出現非常嚴重的卡頓。&#xA;一般設定 64 執行緒即可滿足大多數下載需求，除非你知道你在幹什麼，否則不建議設定更多的執行緒數！</sys:String>
     <sys:String x:Key="Setup.GameManage.Download.Threads.ToolTip">執行緒數越多，限速的檔案下載越快，但過高的執行緒數可能會造成下載時非常嚴重的卡頓。&#xA;一般而言，64 執行緒已可以保證足夠的下載速度。</sys:String>
+    <!-- [修改來自AI] 以下 9 筆繁體翻譯由 AI 補齊（2026-09-26），非人工維護 -->
+    <sys:String x:Key="Setup.GameManage.Download.FileConnections">單檔最大連線數</sys:String>
+    <sys:String x:Key="Setup.GameManage.Download.FileConnections.ToolTip">大檔案最多同時使用的連線數。提高此值可能加快受單一連線限速的下載，但也可能更容易被下載來源限速。</sys:String>
+    <sys:String x:Key="Setup.GameManage.Download.HttpProtocol">檔案下載協定</sys:String>
+    <sys:String x:Key="Setup.GameManage.Download.HttpProtocol.Auto">自動選擇（建議）</sys:String>
+    <sys:String x:Key="Setup.GameManage.Download.HttpProtocol.Auto.ToolTip">小檔案與批次下載優先使用 HTTP/2；大檔案分段下載使用 HTTP/1.1，以兼顧並發與相容性。</sys:String>
+    <sys:String x:Key="Setup.GameManage.Download.HttpProtocol.Http11">HTTP/1.1</sys:String>
+    <sys:String x:Key="Setup.GameManage.Download.HttpProtocol.Http11.ToolTip">所有檔案下載強制使用 HTTP/1.1。適用於需要多條獨立連線以提升大檔案速度的網路環境。</sys:String>
+    <sys:String x:Key="Setup.GameManage.Download.HttpProtocol.Http2">優先使用 HTTP/2</sys:String>
+    <sys:String x:Key="Setup.GameManage.Download.HttpProtocol.Http2.ToolTip">所有檔案下載優先使用 HTTP/2；若下載來源或代理不支援，會自動回退至 HTTP/1.1。</sys:String>
     <sys:String x:Key="Setup.GameManage.Download.Unlimited">無限制</sys:String>
 
     <!-- Setup.Java -->
