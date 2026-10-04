@@ -1624,6 +1624,8 @@
     <sys:String x:Key="Launch.Home.Instance.NotFound">未找到可用的遊戲實例</sys:String>
     <sys:String x:Key="Launch.Home.InstanceSettings">實例設定</sys:String>
     <sys:String x:Key="Launch.Home.SelectInstance">實例選擇</sys:String>
+    <!-- [修改來自AI] 多開翻譯由 AI 新增（2026-10-04），非人工維護 -->
+    <sys:String x:Key="Launch.Home.MultiLaunch">多開</sys:String>
     <sys:String x:Key="Launch.Home.VersionList.Loading">正在載入版本清單，請稍候</sys:String>
 
     <!-- Launch.Homepage -->

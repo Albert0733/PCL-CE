@@ -194,6 +194,17 @@ public static partial class Config
         /// </summary>
         [ConfigItem<bool>("UiLauncherLogo", true, ConfigSource.Local)] public partial bool ShowStartupLogo { get; set; }
 
+        // [修改來自AI] 以下 2 個多開設定項由 AI 新增（2026-10-04），非人工維護
+        /// <summary>
+        /// 启用力多开（串列启动当前实例多次）。
+        /// </summary>
+        [ConfigItem<bool>("UiMultiLaunch", false, ConfigSource.Local)] public partial bool MultiLaunch { get; set; }
+
+        /// <summary>
+        /// 多开次数。
+        /// </summary>
+        [ConfigItem<int>("UiMultiLaunchCount", 2, ConfigSource.Local)] public partial int MultiLaunchCount { get; set; }
+
         /// <summary>
         /// 锁定窗口大小。
         /// </summary>

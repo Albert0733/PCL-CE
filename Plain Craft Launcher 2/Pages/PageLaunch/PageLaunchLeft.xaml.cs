@@ -59,6 +59,9 @@ public partial class PageLaunchLeft
         BtnMore.Click += BtnMore_Click;
         PanLaunchingInfo.SizeChanged += PanLaunchingInfo_SizeChangedW;
         PanLaunchingInfo.SizeChanged += PanLaunchingInfo_SizeChangedH;
+        // 多开 [修改來自AI]（2026-10-04），非人工維護
+        CheckMultiLaunch.Change += CheckMultiLaunch_Change;
+        ModLaunch.mcLaunchLoader.OnStateChangedUi += MultiLaunchStateChanged;
     }
     private static void OnLanguageChanged(PageLaunchLeft page) => ModBase.RunInUi(page.RefreshButtonsUI);
 
@@ -79,6 +82,7 @@ public partial class PageLaunchLeft
         ModInstanceList.mcInstanceListLoader.LoadingStateChanged += (_, _) => RefreshButtonsUI();
         ModFolder.mcFolderListLoader.LoadingStateChanged += (_, _) => RefreshButtonsUI();
         RefreshButtonsUI();
+        InitMultiLaunchUi();
 
         // 初始化档案
         ProfileService.Load();
@@ -236,6 +240,14 @@ public partial class PageLaunchLeft
                     return;
                 }
 
+                // 多开：串列启动当前实例多次
+                if (Config.Preference.MultiLaunch && Config.Preference.MultiLaunchCount > 1)
+                {
+                    _multiLaunchRemaining = Config.Preference.MultiLaunchCount - 1;
+                    ModLaunch.McLaunchStart();
+                    return;
+                }
+
                 ModLaunch.McLaunchStart();
                 break;
             }
@@ -244,6 +256,71 @@ public partial class PageLaunchLeft
                 ModMain.frmMain.PageChange(FormMain.PageType.Download, FormMain.PageSubType.DownloadInstall);
                 break;
             }
+        }
+    }
+
+    // [修改來自AI] 以下多開功能邏輯由 AI 新增（2026-10-04），非人工維護
+    // 多开剩余启动次数（不含正在进行的这一次）
+    private int _multiLaunchRemaining;
+
+    // 初始化多开 UI
+    private void InitMultiLaunchUi()
+    {
+        PanMultiLaunch.Visibility = Visibility.Visible;
+        CheckMultiLaunch.Checked = Config.Preference.MultiLaunch;
+        UpdateMultiCountLabel();
+    }
+
+    // 多开开关
+    private void CheckMultiLaunch_Change(object sender, bool user)
+    {
+        if (!user)
+            return;
+        Config.Preference.MultiLaunch = CheckMultiLaunch.Checked == true;
+    }
+
+    // 多开次数 - 
+    private void BtnMultiMinus_Click(object sender, MouseButtonEventArgs e)
+    {
+        Config.Preference.MultiLaunchCount -= 1;
+        if (Config.Preference.MultiLaunchCount < 2)
+            Config.Preference.MultiLaunchCount = 2;
+        UpdateMultiCountLabel();
+    }
+
+    // 多开次数 +
+    private void BtnMultiPlus_Click(object sender, MouseButtonEventArgs e)
+    {
+        Config.Preference.MultiLaunchCount += 1;
+        if (Config.Preference.MultiLaunchCount > 10)
+            Config.Preference.MultiLaunchCount = 10;
+        UpdateMultiCountLabel();
+    }
+
+    private void UpdateMultiCountLabel()
+    {
+        LabMultiCount.Text = "×" + Config.Preference.MultiLaunchCount;
+    }
+
+    // 串列多开：每次启动流程结束后，若还有剩余次数则自动启动下一次
+    private void MultiLaunchStateChanged(ModLoader.LoaderBase loader, ModBase.LoadState newState,
+        ModBase.LoadState oldState)
+    {
+        if (_multiLaunchRemaining <= 0)
+            return;
+        switch (newState)
+        {
+            case ModBase.LoadState.Finished:
+            {
+                _multiLaunchRemaining--;
+                if (_multiLaunchRemaining > 0)
+                    ModBase.RunInUi(() => ModLaunch.McLaunchStart());
+                break;
+            }
+            case ModBase.LoadState.Failed:
+            case ModBase.LoadState.Aborted:
+                _multiLaunchRemaining = 0; // 失败或取消则中止多开
+                break;
         }
     }
 
